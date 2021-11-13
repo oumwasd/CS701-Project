@@ -60,7 +60,7 @@ space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
-new_parameter_names = [f"{MODEL_NAME}__" + key for key in space]
+new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
     (pipl_model, pipl_space, scoring = metrics, cv = in_cv, n_jobs = 2, refit = False)

@@ -58,7 +58,7 @@ pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1000]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
-new_parameter_names = [f"{MODEL_NAME}__" + key for key in space]
+new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
     (pipl_model, pipl_space, scoring = metrics, cv = in_cv, n_jobs = 2, refit = False)
