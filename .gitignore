@@ -1,3 +1,3 @@
-/__pycache
-/result
-/test*.py
+__pycache__
+result
+test*.py
