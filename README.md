@@ -6,4 +6,5 @@ hmeasure\
 pandas\
 pylint\
 imbalanced-learn\
-ipykernel
+ipykernel\
+สามารถใช้ poetry เพื่อติดตั้งไลบารี่ได้ อยู่ใน pyproject.toml
