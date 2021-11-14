@@ -55,7 +55,7 @@ space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, n_jobs = 3, refit = False)
+    (model, space, scoring = metrics, cv = in_cv, n_jobs = 4, refit = False)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -74,7 +74,7 @@ for i, para in enumerate(parameters):
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
     eval_model = sklearn.tree.DecisionTreeClassifier(**para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 3)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 4)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
