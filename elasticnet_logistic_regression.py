@@ -88,5 +88,5 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
 # grid_result.to_csv("result/Ela-net Logit Grid Result.csv", index = False)
-parameters_result.to_csv("result/Ela-net Logit Parameter Result.csv", index = False)
+parameters_result.to_csv("result/Ela-net Logit Parameter Result.csv", index = True)
 scores_result.to_csv("result/Ela-net Logit Scores Result.csv", index = False)
