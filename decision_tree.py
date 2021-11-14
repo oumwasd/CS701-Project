@@ -80,5 +80,5 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
 # grid_result.to_csv("result/Deci Tree Grid Result.csv", index = False)
-parameters_result.to_csv("result/Deci Tree Parameter Result.csv", index = True)
+parameters_result.to_csv("result/Deci Tree Parameters Result.csv", index = True)
 scores_result.to_csv("result/Deci Tree Scores Result.csv", index = False)
