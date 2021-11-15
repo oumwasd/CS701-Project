@@ -78,5 +78,5 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
 # grid_result.to_csv("result/Logit Grid Result.csv", index = False)
-parameters_result.to_csv("result/Logit Parameters Result.csv", index = False)
+parameters_result.to_csv("result/Logit Parameters Result.csv", index = True)
 scores_result.to_csv("result/Logit Scores Result.csv", index = False)
