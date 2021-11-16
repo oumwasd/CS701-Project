@@ -1,10 +1,10 @@
-"""Decision Tree with SMOTE"""
+"""Random Forest with SMOTE"""
 # %%
 # import
 import numpy as np
 import pandas as pd
 import imblearn as il
-import sklearn.tree
+import sklearn.ensemble
 import sklearn.model_selection
 import sklearn.metrics
 import sklearn.preprocessing
@@ -13,7 +13,7 @@ import my_metrics
 # load dataset
 dataset = pd.read_csv("../Dataset.csv")
 dataset = dataset.drop(columns = "Id")
-MODEL_NAME = "deci_tree"
+MODEL_NAME = "ran_for"
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -53,7 +53,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = sklearn.tree.DecisionTreeClassifier()
+model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
@@ -81,7 +81,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.tree.DecisionTreeClassifier(**para)
+    eval_model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 4)
@@ -89,6 +89,6 @@ for i, para in enumerate(parameters):
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("../result/Deci Tree with SMOTE Grid Result.csv", index = False)
-parameters_result.to_csv("../result/Deci Tree with SMOTE Parameters Result.csv", index = True)
-scores_result.to_csv("../result/Deci Tree with SMOTE Scores Result.csv", index = False)
+# grid_result.to_csv("../result/Ran For Grid Result.csv", index = False)
+parameters_result.to_csv("../result/Ran For with SMOTE Parameters Result.csv", index = True)
+scores_result.to_csv("../result/Ran For with SMOTE Scores Result.csv", index = False)
