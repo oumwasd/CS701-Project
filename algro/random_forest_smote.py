@@ -56,7 +56,7 @@ smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
+space = {"n_estimators":[10, 50, 100], "criterion":["gini", "entropy"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
@@ -89,6 +89,6 @@ for i, para in enumerate(parameters):
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("../result/Ran For Grid Result.csv", index = False)
+# grid_result.to_csv("../result/Ran For with SMOTE Grid Result.csv", index = False)
 parameters_result.to_csv("../result/Ran For with SMOTE Parameters Result.csv", index = True)
 scores_result.to_csv("../result/Ran For with SMOTE Scores Result.csv", index = False)
