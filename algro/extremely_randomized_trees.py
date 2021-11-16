@@ -1,4 +1,4 @@
-"""Random Forest"""
+"""Extremely Randomized Trees"""
 # %%
 # import
 import numpy as np
@@ -12,7 +12,7 @@ import my_metrics
 # load dataset
 dataset = pd.read_csv("../Dataset.csv")
 dataset = dataset.drop(columns = "Id")
-MODEL_NAME = "ran_for"
+MODEL_NAME = "er_tree"
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -49,7 +49,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1)
+model = sklearn.ensemble.ExtraTreesClassifier(n_jobs = -1)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 50, 100], "criterion":["gini", "entropy"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
@@ -73,7 +73,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1, **para)
+    eval_model = sklearn.ensemble.ExtraTreesClassifier(n_jobs = -1, **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
             n_jobs = -1, pre_dispatch = 8)
@@ -81,7 +81,7 @@ for i, para in enumerate(parameters):
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-FILE_NAME = "Ran For"
+FILE_NAME = "ER Tree"
 # grid_result.to_csv(f"../result/{FILE_NAME} Grid Result.csv", index = False)
 parameters_result.to_csv(f"../result/{FILE_NAME} Parameters Result.csv", index = True)
 scores_result.to_csv(f"../result/{FILE_NAME} Scores Result.csv", index = False)

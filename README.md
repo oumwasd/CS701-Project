@@ -8,5 +8,5 @@ pylint\
 imbalanced-learn\
 ipykernel\
 สามารถใช้ poetry เพื่อติดตั้งไลบารี่ได้ (ไฟล์ pyproject.toml จำเป็นสำหรับการใช้งาน poetry)\
-สามารถ run ไฟล์ main.py ไฟล์เดียวหรือ run แต่ละไฟล์ที่มีชื่ออัลกอริทึม (ตัวอย่างเช่น elasticnet_logistic_regression_smote.py)\
+สามารถ run แต่ละไฟล์ที่มีชื่ออัลกอริทึมในโฟลเดอร์ algro (ตัวอย่างเช่น elasticnet_logistic_regression_smote.py)\
 เมื่อ run เสร็จแล้วจะผลลัพธ์จะอยู่ในโฟลเดอร์ result

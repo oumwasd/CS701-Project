@@ -63,7 +63,8 @@ space = {"n_estimators":[10, 50, 100], "criterion":["gini", "entropy"], \
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, n_jobs = 4, refit = False)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, \
+        n_jobs = -1,  pre_dispatch = 6)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -84,11 +85,13 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 4)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
+            n_jobs = -1, pre_dispatch = 6)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("../result/Ran For with SMOTE Grid Result.csv", index = False)
-parameters_result.to_csv("../result/Ran For with SMOTE Parameters Result.csv", index = True)
-scores_result.to_csv("../result/Ran For with SMOTE Scores Result.csv", index = False)
+FILE_NAME = "Ran For"
+# grid_result.to_csv(f"../result/{FILE_NAME} with SMOTE Grid Result.csv", index = False)
+parameters_result.to_csv(f"../result/{FILE_NAME} with SMOTE Parameters Result.csv", index = True)
+scores_result.to_csv(f"../result/{FILE_NAME} with SMOTE Scores Result.csv", index = False)

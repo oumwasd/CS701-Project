@@ -61,7 +61,8 @@ space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, n_jobs = 2, refit = False)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, \
+        n_jobs = -1,  pre_dispatch = 6)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -82,11 +83,13 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 2)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
+            n_jobs = -1, pre_dispatch = 6)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("../result/Logit with SMOTE Grid Result.csv", index = False)
-parameters_result.to_csv("../result/Logit with SMOTE Parameters Result.csv", index = True)
-scores_result.to_csv("../result/Logit with SMOTE Scores Result.csv", index = False)
+FILE_NAME = "Logit"
+# grid_result.to_csv(f"../result/{FILE_NAME} with SMOTE Grid Result.csv", index = False)
+parameters_result.to_csv(f"../result/{FILE_NAME} with SMOTE Parameters Result.csv", index = True)
+scores_result.to_csv(f"../result/{FILE_NAME} with SMOTE Scores Result.csv", index = False)

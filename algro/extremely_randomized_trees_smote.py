@@ -1,8 +1,9 @@
-"""Random Forest"""
+"""Extremely Randomized Trees with SMOTE"""
 # %%
 # import
 import numpy as np
 import pandas as pd
+import imblearn as il
 import sklearn.ensemble
 import sklearn.model_selection
 import sklearn.metrics
@@ -12,7 +13,7 @@ import my_metrics
 # load dataset
 dataset = pd.read_csv("../Dataset.csv")
 dataset = dataset.drop(columns = "Id")
-MODEL_NAME = "ran_for"
+MODEL_NAME = "er_tree"
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -48,15 +49,22 @@ log_loss_score = sklearn.metrics.make_scorer \
 metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
+# SMOTE
+smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
+# %%
 # Grid search
-model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1)
+model = sklearn.ensemble.ExtraTreesClassifier(n_jobs = -1)
+pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 50, 100], "criterion":["gini", "entropy"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
+# เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
+new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
+pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1, pre_dispatch = 8)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, \
+        n_jobs = -1,  pre_dispatch = 6)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -65,7 +73,8 @@ parameters = []
 for name in metrics_name:
     row_first = grid_result[grid_result[f"rank_test_{name}"] == 1]
     para = row_first["params"].iloc[0]
-    parameters.append(para)
+    para_val = [para[f"{MODEL_NAME}__{key}"] for key in space]
+    parameters.append(dict(zip(space.keys(), para_val)))
 parameters_result = pd.DataFrame(dict(zip(metrics_name, parameters)))
 # %%
 # Evaluation
@@ -73,15 +82,16 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.ensemble.RandomForestClassifier(n_jobs = -1, **para)
+    eval_model = sklearn.ensemble.ExtraTreesClassifier(n_jobs = -1, **para)
+    eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 8)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
+            n_jobs = -1, pre_dispatch = 6)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-FILE_NAME = "Ran For"
-# grid_result.to_csv(f"../result/{FILE_NAME} Grid Result.csv", index = False)
-parameters_result.to_csv(f"../result/{FILE_NAME} Parameters Result.csv", index = True)
-scores_result.to_csv(f"../result/{FILE_NAME} Scores Result.csv", index = False)
+FILE_NAME = "ER Tree"
+# grid_result.to_csv(f"../result/{FILE_NAME} with SMOTE Grid Result.csv", index = False)
+parameters_result.to_csv(f"../result/{FILE_NAME} with SMOTE Parameters Result.csv", index = True)
+scores_result.to_csv(f"../result/{FILE_NAME} with SMOTE Scores Result.csv", index = False)

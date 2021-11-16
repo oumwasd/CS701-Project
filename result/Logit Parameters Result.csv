@@ -1,0 +1,3 @@
+,F1,AUC,H-measure,KS_score,Brier_score,Log_loss
+max_iter,100,100,500,500,100,100
+solver,newton-cg,newton-cg,newton-cg,newton-cg,newton-cg,newton-cg

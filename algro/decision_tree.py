@@ -55,7 +55,8 @@ space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
     "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, n_jobs = 4, refit = False)
+    (model, space, scoring = metrics, cv = in_cv, refit = False, \
+        n_jobs = -1, pre_dispatch = 8)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -74,11 +75,13 @@ for i, para in enumerate(parameters):
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
     eval_model = sklearn.tree.DecisionTreeClassifier(**para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 4)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
+            n_jobs = -1, pre_dispatch = 8)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("../result/Deci Tree Grid Result.csv", index = False)
-parameters_result.to_csv("../result/Deci Tree Parameters Result.csv", index = True)
-scores_result.to_csv("../result/Deci Tree Scores Result.csv", index = False)
+FILE_NAME = "Deci Tree"
+# grid_result.to_csv(f"../result/{FILE_NAME} Grid Result.csv", index = False)
+parameters_result.to_csv(f"../result/{FILE_NAME} Parameters Result.csv", index = True)
+scores_result.to_csv(f"../result/{FILE_NAME} Scores Result.csv", index = False)
