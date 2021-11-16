@@ -1,6 +1,6 @@
 # CS701 Project of Group 7
 ไลบารี่ที่ต้องใช้\
-python\
+python 3.9+\
 scikit-learn\
 hmeasure\
 pandas\

@@ -1,6 +1,7 @@
 """Random Forest with SMOTE"""
 # %%
 # import
+import pathlib
 import numpy as np
 import pandas as pd
 import imblearn as il
@@ -11,7 +12,8 @@ import sklearn.preprocessing
 import my_metrics
 # %%
 # load dataset
-dataset = pd.read_csv("../Dataset.csv")
+parent_path = pathlib.Path.cwd().parent
+dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "ran_for"
 # %%
@@ -92,6 +94,9 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
 FILE_NAME = "Ran For"
-# grid_result.to_csv(f"../result/{FILE_NAME} with SMOTE Grid Result.csv", index = False)
-parameters_result.to_csv(f"../result/{FILE_NAME} with SMOTE Parameters Result.csv", index = True)
-scores_result.to_csv(f"../result/{FILE_NAME} with SMOTE Scores Result.csv", index = False)
+# grid_result.to_csv(parent_path.joinpath("result", \
+    # f"{FILE_NAME} with SMOTE Grid Result.csv"), index = False)
+parameters_result.to_csv(parent_path.joinpath("result", \
+    f"{FILE_NAME} with SMOTE Parameters Result.csv"), index = True)
+scores_result.to_csv(parent_path.joinpath("result", \
+    f"{FILE_NAME} with SMOTE Scores Result.csv"), index = False)
