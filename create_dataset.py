@@ -2,7 +2,8 @@
 import pandas as pd
 
 def create_dataset(training, test, prediction):
-    """สร้าง Dataset.csv ด้วยการเอาทุกข้อมูลมารวมกัน ประกอบด้วย Training Data.csv, Test Data.csv, Sample Prediction Dataset.csv"""
+    """สร้าง Dataset.csv ด้วยการเอาทุกข้อมูลมารวมกัน
+    ประกอบด้วย Training Data.csv, Test Data.csv, Sample Prediction Dataset.csv"""
     dataset_training = pd.read_csv(training)
     dataset_test = pd.read_csv(test)
     dateset_prediction = pd.read_csv(prediction)

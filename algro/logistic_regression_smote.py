@@ -11,7 +11,7 @@ import sklearn.preprocessing
 import my_metrics
 # %%
 # load dataset
-dataset = pd.read_csv("Dataset.csv")
+dataset = pd.read_csv("../Dataset.csv")
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "logit"
 # %%
@@ -87,6 +87,6 @@ for i, para in enumerate(parameters):
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("result/Logit with SMOTE Grid Result.csv", index = False)
-parameters_result.to_csv("result/Logit with SMOTE Parameters Result.csv", index = True)
-scores_result.to_csv("result/Logit with SMOTE Scores Result.csv", index = False)
+# grid_result.to_csv("../result/Logit with SMOTE Grid Result.csv", index = False)
+parameters_result.to_csv("../result/Logit with SMOTE Parameters Result.csv", index = True)
+scores_result.to_csv("../result/Logit with SMOTE Scores Result.csv", index = False)

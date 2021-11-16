@@ -1,18 +1,18 @@
-"""Decision Tree"""
+"""Logistic Regression"""
 # %%
 # import
 import numpy as np
 import pandas as pd
-import sklearn.tree
+import sklearn.linear_model
 import sklearn.model_selection
 import sklearn.metrics
 import sklearn.preprocessing
 import my_metrics
 # %%
 # load dataset
-dataset = pd.read_csv("Dataset.csv")
+dataset = pd.read_csv("../Dataset.csv")
 dataset = dataset.drop(columns = "Id")
-MODEL_NAME = "deci_tree"
+MODEL_NAME = "logit"
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -49,13 +49,11 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = sklearn.tree.DecisionTreeClassifier()
+model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"criterion":["gini", "entropy"], "splitter":["best", "random"], \
-    "max_depth":[10, 50, 100, None], "min_samples_split":[2, 4, 6, 8, 10], \
-        "min_samples_leaf":[1, 2, 3, 4, 5]}
+space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1000]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, n_jobs = 4, refit = False)
+    (model, space, scoring = metrics, cv = in_cv, n_jobs = 3, refit = False)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -72,13 +70,13 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.tree.DecisionTreeClassifier(**para)
+    eval_model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1, **para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 4)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, n_jobs = 3)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-# grid_result.to_csv("result/Deci Tree Grid Result.csv", index = False)
-parameters_result.to_csv("result/Deci Tree Parameters Result.csv", index = True)
-scores_result.to_csv("result/Deci Tree Scores Result.csv", index = False)
+# grid_result.to_csv("../result/Logit Grid Result.csv", index = False)
+parameters_result.to_csv("../result/Logit Parameters Result.csv", index = True)
+scores_result.to_csv("../result/Logit Scores Result.csv", index = False)
