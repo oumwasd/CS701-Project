@@ -2,4 +2,4 @@ __pycache__
 algro/__pycache__
 Project.code-workspace
 result
-test*.py
+algro/test*.sh
