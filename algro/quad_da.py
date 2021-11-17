@@ -1,6 +1,7 @@
 """Quadratic Discriminant Analysis"""
 # %%
 # import
+import pathlib
 import numpy as np
 import pandas as pd
 import sklearn.discriminant_analysis
@@ -10,7 +11,8 @@ import sklearn.preprocessing
 import my_metrics
 # %%
 # load dataset
-dataset = pd.read_csv("../Dataset.csv")
+parent_path = pathlib.Path(__file__).parent.parent.resolve()
+dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "quad_da"
 # %%
@@ -80,6 +82,13 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
 FILE_NAME = "QDA"
-# grid_result.to_csv(f"../result/{FILE_NAME} Grid Result.csv", index = False)
-parameters_result.to_csv(f"../result/{FILE_NAME} Parameters Result.csv", index = True)
-scores_result.to_csv(f"../result/{FILE_NAME} Scores Result.csv", index = False)
+pathlib.Path.mkdir(parent_path.joinpath("result"), exist_ok = True)
+# grid_result.to_csv(parent_path.joinpath("result", \
+    # f"{FILE_NAME} Grid Result.csv"), index = False)
+parameters_result.to_csv(parent_path.joinpath("result", \
+    f"{FILE_NAME} Parameters Result.csv"), index = True)
+scores_result.to_csv(parent_path.joinpath("result", \
+    f"{FILE_NAME} Scores Result.csv"), index = False)
+# %%
+# End
+print(f"{FILE_NAME} finish")

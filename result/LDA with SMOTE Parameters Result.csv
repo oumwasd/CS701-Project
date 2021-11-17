@@ -1,0 +1,2 @@
+,F1,AUC,H-measure,KS_score,Brier_score,Log_loss
+solver,svd,svd,svd,svd,svd,svd
