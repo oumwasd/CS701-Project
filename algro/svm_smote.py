@@ -71,7 +71,7 @@ new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
     (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1,  pre_dispatch = 2)
+        n_jobs = -1,  pre_dispatch = 1)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -93,7 +93,7 @@ for i, para in enumerate(parameters):
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 2)
+            n_jobs = -1, pre_dispatch = 1)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
