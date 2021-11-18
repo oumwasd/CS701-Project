@@ -57,7 +57,7 @@ space = {"n_neighbors":[2, 3, 5, 7], "weights":["uniform", "distance"], \
     "p":[1, 1.5, 2]}
 grid_search = sklearn.model_selection.GridSearchCV \
     (model, space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1, pre_dispatch = 8)
+        n_jobs = -1, pre_dispatch = 3)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -77,7 +77,7 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.neighbors.KNeighborsClassifier(n_jobs = -1, **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 8)
+            n_jobs = -1, pre_dispatch = 3)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
