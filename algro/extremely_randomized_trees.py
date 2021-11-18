@@ -58,7 +58,7 @@ space = {"n_estimators":[10, 50, 100], "criterion":["gini", "entropy"], \
         "min_samples_leaf":[1, 2, 3, 4, 5]}
 grid_search = sklearn.model_selection.GridSearchCV \
     (model, space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1, pre_dispatch = 8)
+        n_jobs = -1, pre_dispatch = 4)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -78,7 +78,7 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.ensemble.ExtraTreesClassifier(n_jobs = -1, **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 8)
+            n_jobs = -1, pre_dispatch = 4)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
