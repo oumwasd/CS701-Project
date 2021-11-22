@@ -1,22 +1,28 @@
-"""Logistic Regression"""
+"""XGBoost with SMOTE"""
 # %%
 # import
 import pathlib
 import numpy as np
 import pandas as pd
-import sklearn.linear_model
+import imblearn as il
 import sklearn.model_selection
 import sklearn.metrics
 import sklearn.preprocessing
 import my_metrics
+import xgboost
 # %%
 # load dataset
 parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
-MODEL_NAME = "logit"
+MODEL_NAME = "xgboost"
 # performance
-PERF = {"n_jobs":4, "pre_dispatch":4}
+PERF = {"n_jobs":2, "pre_dispatch":2}
+# %%
+# remove special characters
+for col in ["STATE", "CITY"]:
+    for ch in ["[", "]"]:
+        dataset[col] = dataset[col].str.replace(ch, '', regex = False)
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -52,13 +58,21 @@ log_loss_score = sklearn.metrics.make_scorer \
 metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
+# SMOTE
+smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
+# %%
 # Grid search
-model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1)
+model = xgboost.XGBClassifier(use_label_encoder = False)
+pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1000]}
+space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
+    "max_depth":[10, 50, 100]}
+# เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
+new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
+pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
-grid_search.fit(x_train, y_train)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+grid_search.fit(x_train, y_train, xgboost__eval_metric = "logloss")
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
 # Retrieval Parameter
@@ -66,7 +80,8 @@ parameters = []
 for name in metrics_name:
     row_first = grid_result[grid_result[f"rank_test_{name}"] == 1]
     para = row_first["params"].iloc[0]
-    parameters.append(para)
+    para_val = [para[f"{MODEL_NAME}__{key}"] for key in space]
+    parameters.append(dict(zip(space.keys(), para_val)))
 parameters_result = pd.DataFrame(dict(zip(metrics_name, parameters)))
 # %%
 # Evaluation
@@ -74,21 +89,23 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1, **para)
+    eval_model = xgboost.XGBClassifier(use_label_encoder = False, **para)
+    eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
+            fit_params = {"xgboost__eval_metric":"logloss"}, **PERF)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
 # save to file
-FILE_NAME = "Logit"
+FILE_NAME = "XGB"
 pathlib.Path.mkdir(parent_path.joinpath("result"), exist_ok = True)
 # grid_result.to_csv(parent_path.joinpath("result", \
-    # f"{FILE_NAME} Grid Result.csv"), index = False)
+    # f"{FILE_NAME} with SMOTE Grid Result.csv"), index = False)
 parameters_result.to_csv(parent_path.joinpath("result", \
-    f"{FILE_NAME} Parameters Result.csv"), index = True)
+    f"{FILE_NAME} with SMOTE Parameters Result.csv"), index = True)
 scores_result.to_csv(parent_path.joinpath("result", \
-    f"{FILE_NAME} Scores Result.csv"), index = False)
+    f"{FILE_NAME} with SMOTE Scores Result.csv"), index = False)
 # %%
 # End
 print(f"{FILE_NAME} finish")

@@ -15,6 +15,8 @@ parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "svm"
+# performance
+PERF = {"n_jobs":4, "pre_dispatch":4}
 # %%
 # Normalization
 # Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS
@@ -62,8 +64,7 @@ model = sklearn.svm.NuSVC(probability = True)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"nu":[0.1, 0.3, 0.5, 0.7], "kernel":["linear", "poly", "rbf"]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1, pre_dispatch = 4)
+    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -82,8 +83,7 @@ for i, para in enumerate(parameters):
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
     eval_model = sklearn.svm.NuSVC(probability = True, **para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 4)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%

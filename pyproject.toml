@@ -1,17 +1,18 @@
 [tool.poetry]
-name = "CS701"
-version = "0.1"
-description = "CS701 Test"
-authors = ["Pakhin"]
+name = "CS701-Project"
+version = "2.10"
+description = ""
+authors = ["PakhinZE <oumwasd1@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-scikit-learn = "^1.0"
+xgboost = "^1.5.0"
+scikit-learn = "^1.0.1"
 hmeasure = "^0.1.6"
-pandas = "^1.3.3"
+pandas = "^1.3.4"
 pylint = "^2.11.1"
 imbalanced-learn = "^0.8.1"
-ipykernel = "^6.4.2"
+ipykernel = "^6.5.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -16,6 +16,8 @@ parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "quda_da"
+# performance
+PERF = {"n_jobs":4, "pre_dispatch":4}
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -63,8 +65,7 @@ space = {"reg_param":[0.1, 0.2, 0.3, 0.4, 0.5]}
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, \
-        n_jobs = -1,  pre_dispatch = 1)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, **PERF)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -85,8 +86,7 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis(**para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            n_jobs = -1, pre_dispatch = 1)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
