@@ -5,6 +5,7 @@ import pathlib
 import numpy as np
 import pandas as pd
 import sklearn.svm
+import sklearn.calibration
 import sklearn.model_selection
 import sklearn.metrics
 import sklearn.preprocessing
@@ -60,11 +61,14 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = sklearn.svm.NuSVC(probability = True)
+model = sklearn.svm.LinearSVC(dual = False, max_iter = 4000)
+cali_model = sklearn.calibration.CalibratedClassifierCV(model)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"nu":[0.1, 0.3, 0.5, 0.7], "kernel":["linear", "poly", "rbf"]}
+space = {"penalty":["l1", "l2"], "C":[0.1, 0.3, 0.5, 0.7, 0.9, 1]}
+cali_parameter_names = [f"base_estimator__{key}" for key in space]
+cali_space = dict(zip(cali_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+    (cali_model, cali_space, scoring = metrics, cv = in_cv, refit = False, **PERF)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -73,7 +77,8 @@ parameters = []
 for name in metrics_name:
     row_first = grid_result[grid_result[f"rank_test_{name}"] == 1]
     para = row_first["params"].iloc[0]
-    parameters.append(para)
+    para_val = [para[f"base_estimator__{key}"] for key in space]
+    parameters.append(dict(zip(space.keys(), para_val)))
 parameters_result = pd.DataFrame(dict(zip(metrics_name, parameters)))
 # %%
 # Evaluation
@@ -81,9 +86,10 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.svm.NuSVC(probability = True, **para)
+    eval_model = sklearn.svm.LinearSVC(dual = False, max_iter = 4000, **para)
+    cali_eval_model = sklearn.calibration.CalibratedClassifierCV(eval_model)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
+        (cali_eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
