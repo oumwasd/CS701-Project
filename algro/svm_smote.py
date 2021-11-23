@@ -71,6 +71,7 @@ pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", cali_mode
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"penalty":["l1", "l2"], "C":[0.1, 0.3, 0.5, 0.7, 0.9, 1]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
+# เพิ่มตัวอักษร base_estimator__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ calibration ได้
 new_parameter_names = [f"{MODEL_NAME}__base_estimator__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \

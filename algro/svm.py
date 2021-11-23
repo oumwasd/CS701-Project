@@ -65,6 +65,7 @@ model = sklearn.svm.LinearSVC(dual = False, max_iter = 4000)
 cali_model = sklearn.calibration.CalibratedClassifierCV(model)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"penalty":["l1", "l2"], "C":[0.1, 0.3, 0.5, 0.7, 0.9, 1]}
+# เพิ่มตัวอักษร base_estimator__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ calibration ได้
 cali_parameter_names = [f"base_estimator__{key}" for key in space]
 cali_space = dict(zip(cali_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
