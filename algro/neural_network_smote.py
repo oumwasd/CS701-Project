@@ -17,7 +17,7 @@ dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "neural_net"
 # performance
-PERF = {"n_jobs":4, "pre_dispatch":4}
+PERF = {"n_jobs":2, "pre_dispatch":2}
 # %%
 # Normalization
 # Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS

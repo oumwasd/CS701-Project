@@ -57,7 +57,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = sklearn.neighbors.KNeighborsClassifier(n_jobs = -1)
+model = sklearn.neighbors.KNeighborsClassifier(n_jobs = -1, algorithm = "ball_tree")
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_neighbors":[2, 3, 5, 7], "weights":["uniform", "distance"], \
@@ -84,7 +84,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.neighbors.KNeighborsClassifier(n_jobs = -1, **para)
+    eval_model = sklearn.neighbors.KNeighborsClassifier(n_jobs = -1, algorithm = "ball_tree", **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
