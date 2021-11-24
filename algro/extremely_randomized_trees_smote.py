@@ -17,7 +17,7 @@ dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "er_tree"
 # performance
-PERF = {"n_jobs":4, "pre_dispatch":4}
+PERF = {"n_jobs":1, "pre_dispatch":1}
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership

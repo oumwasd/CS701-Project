@@ -17,7 +17,7 @@ dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "ran_for"
 # performance
-PERF = {"n_jobs":2, "pre_dispatch":2}
+PERF = {"n_jobs":1, "pre_dispatch":1}
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
