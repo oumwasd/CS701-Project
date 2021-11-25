@@ -68,7 +68,7 @@ model = xgboost.XGBClassifier(use_label_encoder = False)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
-    "max_depth":[10, 50, 100]}
+    "max_depth":[2, 4, 6]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))

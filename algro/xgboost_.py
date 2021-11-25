@@ -63,7 +63,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 model = xgboost.XGBClassifier(use_label_encoder = False)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
-    "max_depth":[10, 50, 100]}
+    "max_depth":[2, 4, 6]}
 grid_search = sklearn.model_selection.GridSearchCV \
     (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train, eval_metric = "logloss")
