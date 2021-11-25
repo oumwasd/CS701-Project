@@ -17,6 +17,8 @@ dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "ela_logit"
 # performance
 PERF = {"n_jobs":4, "pre_dispatch":4}
+# Verbosity
+VERBOSE = {"verbose":2}
 # %%
 # Normalization
 # Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS
@@ -66,7 +68,7 @@ in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"max_iter":[100, 500, 1000], "C":[0.1, 0.3, 0.5, 0.7, 1], \
     "l1_ratio":[0.1, 0.3, 0.5, 0.7, 1]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -86,7 +88,8 @@ for i, para in enumerate(parameters):
     eval_model = sklearn.linear_model.LogisticRegression \
         (penalty = "elasticnet", n_jobs = -1, solver = "saga", **para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF, \
+            **VERBOSE)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%

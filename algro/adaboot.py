@@ -17,6 +17,8 @@ dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "adaboost"
 # performance
 PERF = {"n_jobs":4, "pre_dispatch":4}
+# Verbosity
+VERBOSE = {"verbose":2}
 # %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
@@ -57,7 +59,7 @@ model = sklearn.ensemble.AdaBoostClassifier()
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -76,7 +78,8 @@ for i, para in enumerate(parameters):
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
     eval_model = sklearn.ensemble.AdaBoostClassifier(**para)
     result = sklearn.model_selection.cross_val_score \
-        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
+        (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF **PERF, \
+            **VERBOSE)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%

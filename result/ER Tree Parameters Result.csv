@@ -1,0 +1,6 @@
+,F1,AUC,H-measure,KS_score,Brier_score,Log_loss
+criterion,entropy,entropy,entropy,entropy,gini,gini
+max_depth,,,,,,100
+min_samples_leaf,1,1,1,1,1,1
+min_samples_split,2,6,8,6,10,8
+n_estimators,50,10,50,100,100,100

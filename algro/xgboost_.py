@@ -17,6 +17,8 @@ dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "xgboost"
 # performance
 PERF = {"n_jobs":2, "pre_dispatch":2}
+# Verbosity
+VERBOSE = {"verbose":2}
 # %%
 # remove special characters
 for col in ["STATE", "CITY"]:
@@ -63,7 +65,7 @@ in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
     "max_depth":[10, 50, 100]}
 grid_search = sklearn.model_selection.GridSearchCV \
-    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+    (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train, eval_metric = "logloss")
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -83,7 +85,7 @@ for i, para in enumerate(parameters):
     eval_model = xgboost.XGBClassifier(use_label_encoder = False, **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
-            fit_params = {"eval_metric":"logloss"}, **PERF)
+            fit_params = {"eval_metric":"logloss"}, **PERF, **VERBOSE)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%

@@ -19,6 +19,8 @@ dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "svm"
 # performance
 PERF = {"n_jobs":2, "pre_dispatch":2}
+# Verbosity
+VERBOSE = {"verbose":2}
 # %%
 # Normalization
 # Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS
@@ -75,7 +77,7 @@ space = {"penalty":["l1", "l2"], "C":[0.1, 0.3, 0.5, 0.7, 0.9, 1]}
 new_parameter_names = [f"{MODEL_NAME}__base_estimator__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
 grid_search = sklearn.model_selection.GridSearchCV \
-    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, **PERF)
+    (pipl_model, pipl_space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train)
 grid_result = pd.DataFrame(grid_search.cv_results_)
 # %%
@@ -97,7 +99,8 @@ for i, para in enumerate(parameters):
     cali_eval_model = sklearn.calibration.CalibratedClassifierCV(eval_model)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", cali_eval_model)])
     result = sklearn.model_selection.cross_val_score \
-        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF)
+        (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF, \
+            **VERBOSE)
     scores.append(result)
 scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 # %%
