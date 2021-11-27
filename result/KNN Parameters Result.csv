@@ -1,0 +1,4 @@
+,F1,AUC,H-measure,KS_score,Brier_score,Log_loss
+n_neighbors,7,7,7,7,7,7
+p,1,2,1,1.5,1,2
+weights,uniform,distance,distance,uniform,uniform,uniform

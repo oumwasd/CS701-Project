@@ -16,7 +16,7 @@ dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "xgboost"
 # performance
-PERF = {"n_jobs":2, "pre_dispatch":2}
+PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
 # %%
@@ -60,7 +60,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = xgboost.XGBClassifier(use_label_encoder = False)
+model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "exact")
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
     "max_depth":[2, 4, 6]}
@@ -82,7 +82,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = xgboost.XGBClassifier(use_label_encoder = False, **para)
+    eval_model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "hist", **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
             fit_params = {"eval_metric":"logloss"}, **PERF, **VERBOSE)

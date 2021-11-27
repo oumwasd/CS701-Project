@@ -16,7 +16,7 @@ dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "g_boosting"
 # performance
-PERF = {"n_jobs":4, "pre_dispatch":4}
+PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
 # %%
