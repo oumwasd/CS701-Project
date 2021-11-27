@@ -1,0 +1,4 @@
+,F1,AUC,H-measure,KS_score,Brier_score,Log_loss
+learning_rate,0.9,0.9,0.7,0.7,0.7,0.7
+max_depth,6.0,6.0,6.0,6.0,6.0,6.0
+n_estimators,100.0,100.0,100.0,100.0,100.0,100.0
