@@ -60,7 +60,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "exact")
+model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "hist")
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
     "max_depth":[2, 4, 6]}

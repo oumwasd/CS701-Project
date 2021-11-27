@@ -64,7 +64,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "exact")
+model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "hist")
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
@@ -91,7 +91,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "exact", **para)
+    eval_model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "hist", **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \

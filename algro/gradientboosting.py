@@ -55,11 +55,11 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
 # Grid search
-model = sklearn.ensemble.GradientBoostingClassifier()
+model = sklearn.ensemble.GradientBoostingClassifier(subsample = 0.1)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
     "min_samples_split":[2, 4, 6, 8, 10], "min_samples_leaf":[1, 2, 3, 4, 5], \
-        "max_depth":[1, 3, 5]}
+        "max_depth":[2, 3, 5]}
 grid_search = sklearn.model_selection.GridSearchCV \
     (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train)
@@ -78,7 +78,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.ensemble.GradientBoostingClassifier(**para)
+    eval_model = sklearn.ensemble.GradientBoostingClassifier(subsample = 0.1, **para)
     result = sklearn.model_selection.cross_val_score \
         (eval_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF, \
             **VERBOSE)

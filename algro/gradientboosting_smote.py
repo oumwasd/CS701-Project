@@ -1,4 +1,4 @@
-"""Gradient Boosting"""
+"""Gradient Boosting with SMOTE"""
 # %%
 # import
 import pathlib
@@ -59,12 +59,12 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = sklearn.ensemble.GradientBoostingClassifier()
+model = sklearn.ensemble.GradientBoostingClassifier(subsample = 0.1)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
     "min_samples_split":[2, 4, 6, 8, 10], "min_samples_leaf":[1, 2, 3, 4, 5], \
-        "max_depth":[1, 3, 5]}
+        "max_depth":[2, 3, 5]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
@@ -87,7 +87,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.ensemble.GradientBoostingClassifier(**para)
+    eval_model = sklearn.ensemble.GradientBoostingClassifier(subsample = 0.1, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, \
