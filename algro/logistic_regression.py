@@ -20,6 +20,13 @@ PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
 # %%
+# Normalization
+# Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS
+minmax = sklearn.preprocessing.MinMaxScaler(copy = False)
+cols_nor = ["Income", "Age", "Experience", "CURRENT_JOB_YRS", "CURRENT_HOUSE_YRS"]
+for col in cols_nor:
+    dataset[col] = minmax.fit_transform(dataset[col].values.reshape(-1,1))
+# %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
 label_encoder = sklearn.preprocessing.LabelEncoder()
@@ -57,7 +64,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 # Grid search
 model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1000]}
+space = {"solver":["sag", "saga"], "max_iter":[100, 500, 1000]}
 grid_search = sklearn.model_selection.GridSearchCV \
     (model, space, scoring = metrics, cv = in_cv, refit = False, **PERF, **VERBOSE)
 grid_search.fit(x_train, y_train)

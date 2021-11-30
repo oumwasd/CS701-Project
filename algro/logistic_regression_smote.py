@@ -21,6 +21,13 @@ PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
 # %%
+# Normalization
+# Income Age Experience CURRENT_JOB_YRS CURRENT_HOUSE_YRS
+minmax = sklearn.preprocessing.MinMaxScaler(copy = False)
+cols_nor = ["Income", "Age", "Experience", "CURRENT_JOB_YRS", "CURRENT_HOUSE_YRS"]
+for col in cols_nor:
+    dataset[col] = minmax.fit_transform(dataset[col].values.reshape(-1,1))
+# %%
 # Ordinal Encoding
 # Married/Single, Car_Ownership
 label_encoder = sklearn.preprocessing.LabelEncoder()
@@ -62,7 +69,7 @@ smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 model = sklearn.linear_model.LogisticRegression(penalty = "none", n_jobs = -1)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-space = {"solver":["newton-cg", "lbfgs", "sag", "saga"], "max_iter":[100, 500, 1000]}
+space = {"solver":["sag", "saga"], "max_iter":[100, 500, 1000]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
