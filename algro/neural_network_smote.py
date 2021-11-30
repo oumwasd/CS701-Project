@@ -94,7 +94,8 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.neural_network.MLPClassifier(solver = "SGD", batch_size = 256, max_iter = 500, **para)
+    eval_model = sklearn.neural_network.MLPClassifier(solver = "SGD", \
+        batch_size = 256, max_iter = 500, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF, \
