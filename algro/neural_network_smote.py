@@ -66,12 +66,12 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = sklearn.neural_network.MLPClassifier()
+model = sklearn.neural_network.MLPClassifier(solver = "SGD", batch_size = 256, max_iter = 500)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"hidden_layer_sizes":list(np.arange(22, 29)), "activation":["logistic", "tanh", "relu"], \
-    "learning_rate_init":[0.1, 0.01, 0.001], "max_iter":[200, 500, 1000], \
-        "alpha":[0.0001, 0.001, 0.01]}
+    "learning_rate_init":[0.1, 0.01, 0.001], "alpha":[0.0001, 0.001, 0.01], \
+        "learning_rate":["constant", "invscaling", "adaptive"]}
 # เพิ่มตัวอักษร model__ เข้าไปในชื่อพารามิเตอร์เพื่อให้สามารถใช้กับ pipeline ได้
 new_parameter_names = [f"{MODEL_NAME}__{key}" for key in space]
 pipl_space = dict(zip(new_parameter_names, space.values()))
@@ -94,7 +94,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.neural_network.MLPClassifier(**para)
+    eval_model = sklearn.neural_network.MLPClassifier(solver = "SGD", batch_size = 256, max_iter = 500, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
         (eval_pipl_model, X = x_test, y = y_test, cv = out_cv, scoring = metric, **PERF, \
