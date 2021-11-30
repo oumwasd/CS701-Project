@@ -66,7 +66,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
 # Grid search
-model = sklearn.neural_network.MLPClassifier(solver = "SGD", batch_size = 256, max_iter = 500)
+model = sklearn.neural_network.MLPClassifier(solver = "sgd", batch_size = 256, max_iter = 500)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"hidden_layer_sizes":list(np.arange(22, 29)), "activation":["logistic", "tanh", "relu"], \
@@ -94,7 +94,7 @@ scores = []
 for i, para in enumerate(parameters):
     metric = metrics[metrics_name[i]]
     out_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
-    eval_model = sklearn.neural_network.MLPClassifier(solver = "SGD", \
+    eval_model = sklearn.neural_network.MLPClassifier(solver = "sgd", \
         batch_size = 256, max_iter = 500, **para)
     eval_pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", eval_model)])
     result = sklearn.model_selection.cross_val_score \
