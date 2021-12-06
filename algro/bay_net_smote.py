@@ -1,9 +1,10 @@
-"""Bayesian Network"""
+"""Bayesian Network with SMOTE"""
 # %%
 # import library
 import pathlib
 import numpy as np
 import pandas as pd
+import imblearn as il
 import bnlearn as bl
 import sklearn.model_selection
 import sklearn.metrics
@@ -37,6 +38,10 @@ log_loss_score = lambda y_true, y_pred : -1 * sklearn.metrics.log_loss(y_true, y
 metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
+# SMOTE
+smote = il.over_sampling.SMOTENC(sampling_strategy = "minority", \
+    categorical_features = [3, 4, 5, 6, 7, 8], n_jobs = -1)
+# %%
 # Parameters Grid
 parameters_struc = [
     {"methodtype":["cl"], "root_node":["Risk_Flag"],
@@ -58,6 +63,8 @@ for ps in parameters_struc:
             # Preprocessing Data
             in_x_train = x_train.iloc[idx_train]
             in_y_train = y_train.iloc[idx_train]
+            # SMOTE with training data
+            smote.fit_resample(in_x_train, in_y_train)
             in_x_test = x_train.iloc[idx_test]
             in_y_test = y_train.iloc[idx_test]
             # combine x and y
@@ -107,6 +114,8 @@ for i, para in enumerate(parameters):
         # Preprocessing Data
         in_x_train = x_test.iloc[idx_train]
         in_y_train = y_test.iloc[idx_train]
+        # SMOTE with training data
+        smote.fit_resample(in_x_train, in_y_train)
         in_x_test = x_test.iloc[idx_test]
         in_y_test = y_test.iloc[idx_test]
         # combine x and y
@@ -127,11 +136,11 @@ scores_result = pd.DataFrame(dict(zip(metrics_name, scores)))
 FILE_NAME = "Bay Net"
 pathlib.Path.mkdir(parent_path.joinpath("result"), exist_ok = True)
 # grid_result.to_csv(parent_path.joinpath("result", \
-    # f"{FILE_NAME} Grid Result.csv"), index = False)
+    # f"{FILE_NAME} with SMOTE Grid Result.csv"), index = False)
 parameters_result.to_csv(parent_path.joinpath("result", \
-    f"{FILE_NAME} Parameters Result.csv"), index = True)
+    f"{FILE_NAME} with SMOTE Parameters Result.csv"), index = True)
 scores_result.to_csv(parent_path.joinpath("result", \
-    f"{FILE_NAME} Scores Result.csv"), index = False)
+    f"{FILE_NAME} with SMOTE Scores Result.csv"), index = False)
 # %%
 # Ending
 print(f"{FILE_NAME} finish")

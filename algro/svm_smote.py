@@ -1,6 +1,6 @@
 """Support Vector Machines with SMOTE"""
 # %%
-# import
+# import library
 import pathlib
 import numpy as np
 import pandas as pd
@@ -12,12 +12,12 @@ import sklearn.metrics
 import sklearn.preprocessing
 import my_metrics
 # %%
-# load dataset
+# Loading Dataset
 parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "svm"
-# performance
+# Performance
 PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
@@ -44,7 +44,7 @@ for col in cols_oneh:
     dataset = dataset.drop(columns = col)
     dataset = pd.concat([dataset, one_hot_vec], axis = 1)
 # %%
-# split dataset
+# Splitting Dataset
 x_old = dataset[dataset.columns.difference(["Risk_Flag"], sort = False)]
 y_old = dataset["Risk_Flag"]
 x_train, x_test, y_train, y_test = \
@@ -66,7 +66,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 # SMOTE
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
-# Grid search
+# Grid Search
 model = sklearn.svm.LinearSVC(dual = False, max_iter = 4000)
 cali_model = sklearn.calibration.CalibratedClassifierCV(model)
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", cali_model)])
@@ -114,5 +114,5 @@ parameters_result.to_csv(parent_path.joinpath("result", \
 scores_result.to_csv(parent_path.joinpath("result", \
     f"{FILE_NAME} with SMOTE Scores Result.csv"), index = False)
 # %%
-# End
+# Ending
 print(f"{FILE_NAME} finish")

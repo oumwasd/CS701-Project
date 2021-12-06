@@ -1,6 +1,6 @@
 """Deep Learning"""
 # %%
-# import
+# import library
 import pathlib
 import numpy as np
 import pandas as pd
@@ -10,12 +10,12 @@ import sklearn.metrics
 import sklearn.preprocessing
 import my_metrics
 # %%
-# load dataset
+# Loading Dataset
 parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "deep_learn"
-# performance
+# Performance
 PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
@@ -42,7 +42,7 @@ for col in cols_oneh:
     dataset = dataset.drop(columns = col)
     dataset = pd.concat([dataset, one_hot_vec], axis = 1)
 # %%
-# split dataset
+# Splitting Dataset
 x_old = dataset[dataset.columns.difference(["Risk_Flag"], sort = False)]
 y_old = dataset["Risk_Flag"]
 x_train, x_test, y_train, y_test = \
@@ -61,7 +61,7 @@ log_loss_score = sklearn.metrics.make_scorer \
 metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
-# retrieval parameter form neural network
+# retrieve parameter form neural network
 second_layer = np.arange(22, 29)
 # form six metrics
 old_parameters = {
@@ -80,7 +80,7 @@ for para in old_space:
         layer.append((para["hidden_layer_sizes"][0], h2))
     para["hidden_layer_sizes"] = layer
 # %%
-# Grid search for each metrics
+# Grid Search with each metrics
 grid_result = []
 for i, space in enumerate(old_space):
     model = sklearn.neural_network.MLPClassifier(solver = "adam", batch_size = 256, max_iter = 500)
@@ -123,5 +123,5 @@ parameters_result.to_csv(parent_path.joinpath("result", \
 scores_result.to_csv(parent_path.joinpath("result", \
     f"{FILE_NAME} Scores Result.csv"), index = False)
 # %%
-# End
+# Ending
 print(f"{FILE_NAME} finish")

@@ -1,6 +1,6 @@
 """Gradient Boosting"""
 # %%
-# import
+# import library
 import pathlib
 import numpy as np
 import pandas as pd
@@ -10,12 +10,12 @@ import sklearn.metrics
 import sklearn.preprocessing
 import my_metrics
 # %%
-# load dataset
+# Loading Dataset
 parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "g_boosting"
-# performance
+# Performance
 PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
@@ -35,7 +35,7 @@ for col in cols_oneh:
     dataset = dataset.drop(columns = col)
     dataset = pd.concat([dataset, one_hot_vec], axis = 1)
 # %%
-# split dataset
+# Splitting Dataset
 x_old = dataset[dataset.columns.difference(["Risk_Flag"], sort = False)]
 y_old = dataset["Risk_Flag"]
 x_train, x_test, y_train, y_test = \
@@ -54,7 +54,7 @@ log_loss_score = sklearn.metrics.make_scorer \
 metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
     "KS_score":ks_score, "Brier_score":brier_score, "Log_loss":log_loss_score}
 # %%
-# Grid search
+# Grid Search
 model = sklearn.ensemble.GradientBoostingClassifier(subsample = 0.1)
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
 space = {"n_estimators":[10, 20, 50, 100], "learning_rate":[0.1, 0.3, 0.5, 0.7, 0.9, 1], \
@@ -95,5 +95,5 @@ parameters_result.to_csv(parent_path.joinpath("result", \
 scores_result.to_csv(parent_path.joinpath("result", \
     f"{FILE_NAME} Scores Result.csv"), index = False)
 # %%
-# End
+# Ending
 print(f"{FILE_NAME} finish")

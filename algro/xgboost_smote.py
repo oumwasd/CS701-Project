@@ -1,6 +1,6 @@
 """XGBoost with SMOTE"""
 # %%
-# import
+# import library
 import pathlib
 import numpy as np
 import pandas as pd
@@ -11,12 +11,12 @@ import sklearn.preprocessing
 import my_metrics
 import xgboost
 # %%
-# load dataset
+# Loading Dataset
 parent_path = pathlib.Path(__file__).parent.parent.resolve()
 dataset = pd.read_csv(parent_path.joinpath("Dataset.csv"))
 dataset = dataset.drop(columns = "Id")
 MODEL_NAME = "xgboost"
-# performance
+# Performance
 PERF = {"n_jobs":1, "pre_dispatch":1}
 # Verbosity
 VERBOSE = {"verbose":2}
@@ -63,7 +63,7 @@ metrics = {"F1":f1_score, "AUC":auc_score, "H-measure":h_score, \
 # SMOTE
 smote = il.over_sampling.SMOTE(sampling_strategy = "minority", n_jobs = -1)
 # %%
-# Grid search
+# Grid Search
 model = xgboost.XGBClassifier(use_label_encoder = False, tree_method = "hist")
 pipl_model = il.pipeline.Pipeline([("smote", smote), (f"{MODEL_NAME}", model)])
 in_cv = sklearn.model_selection.StratifiedKFold(n_splits = 5, shuffle = True)
@@ -109,5 +109,5 @@ parameters_result.to_csv(parent_path.joinpath("result", \
 scores_result.to_csv(parent_path.joinpath("result", \
     f"{FILE_NAME} with SMOTE Scores Result.csv"), index = False)
 # %%
-# End
+# Ending
 print(f"{FILE_NAME} finish")
