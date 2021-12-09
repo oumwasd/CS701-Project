@@ -1,6 +1,11 @@
+# python cache
 __pycache__
 algro/__pycache__
+# vscode file
 Project.code-workspace
+# test
 algro/test*.py
 test*.py
-poetry.lock
+# Dockerfile
+Dockerfile
+.devcontainer
