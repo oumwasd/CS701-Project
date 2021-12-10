@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="httpgd" width="768.00" height="567.00" viewBox="0 0 768.00 567.00">
+<defs>
+<clipPath id="c0-323b3bc5-9dfd-4792-9d03-fa0054700058"><rect x="0.00" y="0.00" width="768.00" height="567.00"/></clipPath>
+</defs>
+<rect width="100%" height="100%" stroke="none" fill="#FFFFFF"/>
+<g clip-path="url(#c0-323b3bc5-9dfd-4792-9d03-fa0054700058)">
+<polyline points="269.75,67.67 498.25,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="269.75,67.67 269.75,56.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="269.75" y="35.94" text-anchor="middle" font-family="Arimo" font-size="9.00px" textLength="5.72px" lengthAdjust="spacingAndGlyphs">0</text></g>
+<polyline points="498.25,67.67 498.25,56.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="498.25" y="35.95" text-anchor="middle" font-family="Arimo" font-size="9.00px" textLength="5.72px" lengthAdjust="spacingAndGlyphs">1</text></g>
+<g><text x="212.62" y="211.02" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="69.46px" lengthAdjust="spacingAndGlyphs">NB with SMOTE</text></g>
+<polyline points="226.90,207.67 270.37,207.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="270.37,207.67 270.37,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="257.69" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="94.49px" lengthAdjust="spacingAndGlyphs">AdaBoot with SMOTE</text></g>
+<polyline points="226.90,254.33 273.90,254.33" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="273.90,254.33 273.90,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="303.48" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="113.22px" lengthAdjust="spacingAndGlyphs">Ela-net Logit with SMOTE</text></g>
+<polyline points="226.90,301.00 279.60,301.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="279.60,301.00 279.60,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="351.02" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="74.49px" lengthAdjust="spacingAndGlyphs">LDA with SMOTE</text></g>
+<polyline points="226.90,347.67 279.71,347.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="279.71,347.67 279.71,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="396.82" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="78.65px" lengthAdjust="spacingAndGlyphs">Logit with SMOTE</text></g>
+<polyline points="226.90,394.33 279.81,394.33" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="279.81,394.33 279.81,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="444.36" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="76.18px" lengthAdjust="spacingAndGlyphs">SVM with SMOTE</text></g>
+<polyline points="226.90,441.00 279.92,441.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="279.92,441.00 279.92,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="490.51" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="76.56px" lengthAdjust="spacingAndGlyphs">QDA with SMOTE</text></g>
+<polyline points="226.90,487.67 287.10,487.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="287.10,487.67 287.10,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="212.62" y="536.82" text-anchor="end" font-family="Arimo" font-size="9.00px" textLength="105.70px" lengthAdjust="spacingAndGlyphs">G Boosting with SMOTE</text></g>
+<polyline points="226.90,534.33 334.91,534.33" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="334.91,534.33 334.91,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="211.02" font-family="Arimo" font-size="9.00px" textLength="75.87px" lengthAdjust="spacingAndGlyphs">XGB with SMOTE</text></g>
+<polyline points="541.10,207.67 373.20,207.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="373.20,207.67 373.20,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="257.69" font-family="Arimo" font-size="9.00px" textLength="75.92px" lengthAdjust="spacingAndGlyphs">KNN with SMOTE</text></g>
+<polyline points="541.10,254.33 375.89,254.33" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="375.89,254.33 375.89,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="304.36" font-family="Arimo" font-size="9.00px" textLength="76.17px" lengthAdjust="spacingAndGlyphs">ANN with SMOTE</text></g>
+<polyline points="541.10,301.00 377.82,301.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="377.82,301.00 377.82,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="351.02" font-family="Arimo" font-size="9.00px" textLength="68.49px" lengthAdjust="spacingAndGlyphs">DL with SMOTE</text></g>
+<polyline points="541.10,347.67 378.21,347.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="378.21,347.67 378.21,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="397.69" font-family="Arimo" font-size="9.00px" textLength="98.08px" lengthAdjust="spacingAndGlyphs">Deci Tree with SMOTE</text></g>
+<polyline points="541.10,394.33 382.05,394.33" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="382.05,394.33 382.05,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="444.36" font-family="Arimo" font-size="9.00px" textLength="90.11px" lengthAdjust="spacingAndGlyphs">ER Tree with SMOTE</text></g>
+<polyline points="541.10,441.00 391.23,441.00" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="391.23,441.00 391.23,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<g><text x="555.38" y="491.02" font-family="Arimo" font-size="9.00px" textLength="90.75px" lengthAdjust="spacingAndGlyphs">Ran For with SMOTE</text></g>
+<polyline points="541.10,487.67 392.55,487.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="392.55,487.67 392.55,67.67" fill="none" stroke-width="0.75" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="264.66,106.56 381.60,106.56" fill="none" stroke-width="2.25" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="268.18,122.11 383.53,122.11" fill="none" stroke-width="2.25" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="273.89,137.67 387.76,137.67" fill="none" stroke-width="2.25" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="274.20,153.22 396.94,153.22" fill="none" stroke-width="2.25" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="281.39,168.78 398.27,168.78" fill="none" stroke-width="2.25" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
