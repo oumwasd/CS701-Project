@@ -159,3 +159,16 @@ pairwise_brier_vs <- purrr::map2(result_brier[non_smote], result_brier[smote],
     .f = scmamp::wilcoxonSignedTest)
 pairwise_log_vs <- purrr::map2(result_log[non_smote], result_log[smote],
     .f = scmamp::wilcoxonSignedTest)
+## summarize
+summar_f1 <- purrr::map2(result_f1[smote], result_f1[non_smote], .f = `-`) |>
+    purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
+summar_auc <- purrr::map2(result_auc[smote], result_auc[non_smote], .f = `-`) |>
+    purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
+summar_h <- purrr::map2(result_h[smote], result_h[non_smote], .f = `-`) |>
+    purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
+summar_ks <- purrr::map2(result_ks[smote], result_ks[non_smote], .f = `-`) |>
+    purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
+summar_brier <- purrr::map2(result_brier[smote], result_brier[non_smote],
+    .f = `-`) |> purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
+summar_log <- purrr::map2(result_log[smote], result_log[non_smote], .f = `-`) |>
+    purrr::map_dbl(.f = mean) |> tibble::as_tibble(rownames = NA)
